@@ -3,20 +3,23 @@ pragma solidity ^0.8.10;
 contract Lottery {
     uint256 public costPerLine;
     uint8[7] public winningNumbers;
-    mapping(address => bool) public enteredAddress;
+    //Stores the address of the Prize pool
+    address payable public poolOwner;
+    address[] public enteredAddresses;
+    mapping(address => bool) public isAddressEntered;
     mapping(address => uint8[7]) public pickedNumbers;
     mapping(address => mapping(uint8 => bool)) public playerWinningNumbers;
+    mapping(address => uint8) public correctNumbers;
+
+    //variable used for For Loops
     uint8 index;
-    bool wonFreeTicket;
 
-    constructor() {}
-
-    function enterLottery() public payable {
-        require(enteredAddress[msg.sender] == false);
-        enteredAddress[msg.sender] = true;
+    constructor(uint256 _costPerLine) {
+        poolOwner = payable(msg.sender);
+        costPerLine = _costPerLine;
     }
 
-    // Takes in 7 chosen numbers and assigns them to the pickedNumbers mapping.
+    //Takes in 7 chosen numbers and assigns them to the pickedNumbers mapping.
     //TRY CLEANING UP
     function chooseNumbers(
         uint8 _0,
@@ -27,6 +30,12 @@ contract Lottery {
         uint8 _5,
         uint8 _6
     ) public payable {
+        require(msg.value == costPerLine);
+        require(isAddressEntered[msg.sender] == false);
+        isAddressEntered[msg.sender] = true;
+        enteredAddresses.push(msg.sender);
+        poolOwner.transfer(costPerLine);
+        //Assign selected numbers to mapping
         pickedNumbers[msg.sender][0] = _0;
         pickedNumbers[msg.sender][1] = _1;
         pickedNumbers[msg.sender][2] = _2;
@@ -44,73 +53,53 @@ contract Lottery {
 
     /* Check Correct Numbers and add up the total correct answers to the
     correctNumbers variable. Also resets the playerWinningNumbers mapping
-    back to a status of false. */
-    //TRY CLEANING UP
-    function checkNumbers(
-        uint8 _0,
-        uint8 _1,
-        uint8 _2,
-        uint8 _3,
-        uint8 _4,
-        uint8 _5,
-        uint8 _6
-    ) public payable {
-        if (_0 == winningNumbers[0]) {
-            playerWinningNumbers[msg.sender][0] = true;
-        }
-        if (_1 == winningNumbers[1]) {
-            playerWinningNumbers[msg.sender][1] = true;
-        }
-        if (_2 == winningNumbers[2]) {
-            playerWinningNumbers[msg.sender][2] = true;
-        }
-        if (_3 == winningNumbers[3]) {
-            playerWinningNumbers[msg.sender][3] = true;
-        }
-        if (_4 == winningNumbers[4]) {
-            playerWinningNumbers[msg.sender][4] = true;
-        }
-        if (_5 == winningNumbers[5]) {
-            playerWinningNumbers[msg.sender][5] = true;
-        }
-        if (_6 == winningNumbers[6]) {
-            playerWinningNumbers[msg.sender][6] = true;
-        }
-
-        uint8 correctNumbers;
-        correctNumbers = 0;
-
-        for (index = 0; index < 7; index++) {
-            require(correctNumbers == 0);
-            if (playerWinningNumbers[msg.sender][index] == true) {
-                correctNumbers++;
-                playerWinningNumbers[msg.sender][index] == false;
+    back to a status of false.
+    Can get very expensive with many enteredAddresses in the array try fixing
+    later or pre charge a fee for gas to every person that enters the lottery */
+    function checkNumbers() public {
+        //Create a correctNumbers mapping to be used to check prize later
+        uint256 accountIndex;
+        //Temporarily set winningNumbers to 1 through 7 for testing
+        winningNumbers[0] = 1;
+        winningNumbers[1] = 2;
+        winningNumbers[2] = 3;
+        winningNumbers[3] = 4;
+        winningNumbers[4] = 5;
+        winningNumbers[5] = 6;
+        winningNumbers[6] = 7;
+        //Loop through each enteredAddresses in the array
+        for (
+            accountIndex = 0;
+            accountIndex < enteredAddresses.length;
+            accountIndex++
+        ) {
+            for (index = 0; index < 7; index++) {
+                if (
+                    pickedNumbers[enteredAddresses[accountIndex]][index] ==
+                    winningNumbers[index]
+                ) {
+                    playerWinningNumbers[enteredAddresses[accountIndex]][
+                        index
+                    ] = true;
+                    correctNumbers[enteredAddresses[accountIndex]]++;
+                }
             }
         }
-
-        if (correctNumbers == 3) {
-            //FREE TICKET
-        }
-        if (correctNumbers == 4) {
-            //20 Dollars
-        }
-        if (correctNumbers == 5) {
-            //3.5% of Prize Pool
-        }
-        if (correctNumbers == 6) {
-            //2.5% of Prize Pool
-        }
+        /* //Add 1 to current prize pool if applicable
         if (correctNumbers == 7) {
             //87.25% of Prize Pool
-        }
+        } else if (correctNumbers == 6) {
+            //2.5% of Prize Pool
+        } else if (correctNumbers == 5) {
+            //3.5% of Prize Pool
+        } else if (correctNumbers == 4) {
+            //20 Dollars
+        } else if (correctNumbers == 3) {
+            //FREE TICKET
+        } */
+        //Reset isAddressEntered state
     }
 
-    /* function freeTicket() {
-        require(wonFreeTicket == true);
-        //RNG Random set of Numbers similar to how winningNumbers is generated
-    }
-
-    function weeklyReset() {
-
+    /* function weeklyReset() {
     } */
 }
