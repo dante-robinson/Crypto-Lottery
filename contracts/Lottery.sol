@@ -19,9 +19,8 @@ contract Lottery is VRFConsumerBase {
         IUniswapRouter(0xE592427A0AEce92De3Edee1F18E0157C05861564);
     IQuoter internal constant quoter =
         IQuoter(0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6);
-    address private constant WETH9 = 0xd0A1E359811322d97991E03f863a0C30C2cF029C;
-    address private constant LINKAddress =
-        0xa36085F69e2889c224210F603D836748e7dC0088;
+    address private WETH9;
+    address private LINKAddress;
     uint24 internal uniFee = 3000;
     uint256 public ethAmount;
 
@@ -61,12 +60,14 @@ contract Lottery is VRFConsumerBase {
         uint256 _costPerLine,
         address _vrfCoordinator,
         bytes32 _keyHash,
-        uint256 _linkFee
+        uint256 _linkFee,
+        address _linkAddress,
+        address _WETH9
     )
         public
         VRFConsumerBase(
             _vrfCoordinator, // VRF Coordinator address
-            LINKAddress // LINK Token address
+            _linkAddress // LINK Token address
         )
     {
         poolOwner = payable(msg.sender);
@@ -75,9 +76,11 @@ contract Lottery is VRFConsumerBase {
         // Start draw Number at 1
         drawNumber = 1;
 
-        //Kovan keyHash
+        //Set variables
         keyHash = _keyHash;
-        linkFee = _linkFee; // 0.1 LINK
+        linkFee = _linkFee;
+        LINKAddress = _linkAddress;
+        WETH9 = _WETH9;
     }
 
     //Only Contract Owner can call this modifier

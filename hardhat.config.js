@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-truffle5");
+require("hardhat-deploy");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -20,10 +21,16 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
+    rinkeby: {
+      url:
+        "https://eth-rinkeby.alchemyapi.io/v2/HQmUd_k7_dAjIcjEBmZ9KWfjUkr9JkgL",
+      blockNumber: 10100612,
+    },
     hardhat: {
       forking: {
-        url: "https://eth-kovan.alchemyapi.io/v2/HQmUd_k7_dAjIcjEBmZ9KWfjUkr9JkgL",
-        blockNumber: 28581409,
+        url:
+          "https://eth-rinkeby.alchemyapi.io/v2/HQmUd_k7_dAjIcjEBmZ9KWfjUkr9JkgL",
+        blockNumber: 10100612,
       },
     },
   },

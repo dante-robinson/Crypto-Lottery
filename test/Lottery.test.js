@@ -21,10 +21,18 @@ describe("Lottery Contract", () => {
       .deploy({
         data: Lottery.bytecode,
         arguments: [
+          //Cost Per Line
           web3.utils.toWei("0.1", "ether"),
-          "0xdd3782915140c8f3b190b5d67eac6dc5760c46e9",
-          "0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4",
+          //VRF Coordinator Address
+          "0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B",
+          //Chainlink Key Hash
+          "0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311",
+          //Chainlink Fee
           BigInt(100000000000000000),
+          //LINK Address
+          "0x01BE23585060835E02B77ef475b0Cc51aA1e0709",
+          //WETH Address
+          "0xc778417E063141139Fce010982780140Aa0cD5Ab",
         ],
       })
       .send({ from: accounts[0] });
@@ -43,7 +51,7 @@ describe("Lottery Contract", () => {
         type: "function",
       },
     ];
-    const LINKAddress = "0xa36085f69e2889c224210f603d836748e7dc0088";
+    const LINKAddress = "0x01BE23585060835E02B77ef475b0Cc51aA1e0709";
     link = await new web3.eth.Contract(linkABI, LINKAddress);
 
     // Assign balance before transfer
@@ -134,8 +142,8 @@ describe("Lottery Contract", () => {
     );
   });
 
-  /* Not 100% Reliable as its a fork of Kovan it draws the same numbers every time on Remix
-   uploaded to Kovan this is not as issue, Test checks accounts are added to correct array only */
+  /* Not 100% Reliable as its a fork of rinkeby it draws the same numbers every time on Remix
+   uploaded to rinkeby this is not as issue, Test checks accounts are added to correct array only */
   it("checks the pickedNumbers to winningNumbers", async () => {
     await lottery.methods.checkNumbers().send({ from: accounts[2] });
     //Same Numbers in all different positions to check order doesn't matter
