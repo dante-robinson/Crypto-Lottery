@@ -85,12 +85,26 @@ You can also add a require statement to expand() if you wish to require that the
 greater than 0 to prevent calling expand before a random number has returned, however the test.js
 file will fail because it relies on that randomResult being 0.
 
-This contract started using ganache then I switched halfway through to hardhat and the tests now
-run using this command
+This contract is using ganache and the tests can be run by first getting an API KEY from ALCHEMY or INFURA and starting a forked network with ganache-cli by running
 
-`npx hardhat test`
+`ganache-cli --fork APILINK`
 
-if you would like to test with ganache you are on your own in changing the test file to be compatible.
+with your API LINK. Then you can run in a seperate terminal window
+
+`truffle test`
+
+If you would like to deploy the project you will need to create a .env file in the root directory and put 2 variables in it with these names
+
+```
+ALCHEMY_API = "JUST YOUR API KEY NOT THE ENTIRE LINK"
+DEPLOYER_KEY = "YOUR PRIVATE KEY"
+```
+
+then you should be able to run
+
+`truffle migrate --network rinkeby`
+
+if you need any test ETH for rinkeby checkout the chainlink faucet here - https://faucets.chain.link/rinkeby
 
 ## Things not finished
 
