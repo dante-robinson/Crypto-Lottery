@@ -6,7 +6,7 @@
   width: 100vw;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 50px 600px 50px 600px 350px 20px;
+  grid-template-rows: 50px 309px 309px 50px 259px 50px 600px 350px 20px;
   padding: 10px;
   box-sizing: border-box;
 }
@@ -40,9 +40,57 @@
   text-align: center;
   top: 400px;
 }
+
+.days {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 3;
+  grid-column-end: 4;
+
+  position: relative;
+  text-align: center;
+  right: 100px;
+}
+
+.hours {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 3;
+  grid-column-end: 4;
+
+  position: relative;
+  text-align: center;
+  right: 50px;
+  bottom: 34px;
+}
+
+.minutes {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 3;
+  grid-column-end: 4;
+
+  position: relative;
+  text-align: center;
+  left: 15px;
+  bottom: 68px;
+}
+
+.seconds {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 3;
+  grid-column-end: 4;
+
+  position: relative;
+  text-align: center;
+  left: 85px;
+  bottom: 102px;
+}
+
 .button {
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-row-start: 4;
+  grid-row-end: 5;
   grid-column-start: 2;
   grid-column-end: 3;
   width: 150px;

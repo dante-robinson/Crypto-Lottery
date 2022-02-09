@@ -3,6 +3,8 @@ const HDWalletProvider = require("truffle-hdwallet-provider-privkey");
 const privateKey = [process.env.DEPLOYER_KEY];
 
 module.exports = {
+  contracts_directory: "./src/contracts/",
+  contracts_build_directory: "./src/artifacts",
   networks: {
     development: {
       host: "127.0.0.1", // Localhost (default: none)

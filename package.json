@@ -13,9 +13,6 @@
   "license": "MIT",
   "dependencies": {
     "@chainlink/contracts": "^0.2.2",
-    "@drizzle/react-components": "^1.5.3",
-    "@drizzle/react-plugin": "^1.5.3",
-    "@drizzle/store": "^1.5.3",
     "@openzeppelin/contracts": "^4.4.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
