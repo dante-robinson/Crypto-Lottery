@@ -4,9 +4,9 @@ const ContractAddress = ({ lottery }) => {
   //Only Dynamic incase re-deployed
   const [lotteryAddress, setLotteryAddress] = useState(null);
 
-  const getLotteryAddress = async (address) => {
-    address = await lottery.options.address;
-    return setLotteryAddress(address);
+  const getLotteryAddress = async () => {
+    let address = await lottery.options.address;
+    setLotteryAddress(address);
   };
 
   useEffect(() => {

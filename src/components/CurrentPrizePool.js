@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 const CurrentPrizePool = ({ lottery }) => {
   const [totalPrizePool, setTotalPrizePool] = useState(null);
 
-  const getTotalPrizePool = async (total) => {
-    total = await lottery.methods.totalPrizePool().call();
-    return setTotalPrizePool(total);
+  const getTotalPrizePool = async () => {
+    let total = await lottery.methods.totalPrizePool().call();
+    setTotalPrizePool(total);
   };
 
   useEffect(() => {

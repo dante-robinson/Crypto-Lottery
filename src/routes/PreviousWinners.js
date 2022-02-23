@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import env from "react-dotenv";
 import axios from "axios";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
-const PreviousWinners = ({ lottery }) => {
+const PreviousWinners = (props) => {
   //Set value in advance to avoid error when mapping over array
   const [previousWinners, setPreviousWinners] = useState([]);
 
-  const getPreviousWinners = async (winners = []) => {
+  const getPreviousWinners = async () => {
     // Contract
-    const address = await lottery.options.address;
+    const address = await props.lottery.options.address;
     // Lottery Wallet
-    const wallet = await lottery.methods.poolOwner().call();
+    const wallet = await props.lottery.methods.poolOwner().call();
 
     const etherscan =
       "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=" +
@@ -32,42 +34,46 @@ const PreviousWinners = ({ lottery }) => {
           result[i] === undefined
         ) {
         } else {
-          winners.push({
-            to: result[i].to,
-            hash: "https://rinkeby.etherscan.io/tx/" + result[i].hash,
-          });
+          setPreviousWinners((previousWinners) => [
+            ...previousWinners,
+            {
+              to: result[i].to,
+              hash: "https://rinkeby.etherscan.io/tx/" + result[i].hash,
+            },
+          ]);
         }
       }
     });
-    if (winners.length) {
-      return setPreviousWinners((previousWinners) => [winners]);
-    }
   };
 
   useEffect(() => {
     getPreviousWinners();
   }, []);
 
-  const returnPreviousWinners = previousWinners
-    .slice(1, 10)
-    .map((winner, index) => {
-      return (
-        <ul>
-          <li key={index}>
-            <a href={winner.hash}> {winner.to}</a>
-          </li>
-        </ul>
-      );
-    });
+  const returnPreviousWinners = previousWinners.map((winner, index) => {
+    return (
+      <li className="list-none inline" key={index}>
+        <a href={winner.hash} className="">
+          {winner.to}{" "}
+        </a>
+      </li>
+    );
+  });
 
   return (
-    <div className="row-start-10 row-end-11 col-start-1 col-end-4">
-      <h3 className="text-4xl font-extrabold">Previous Winners</h3>
-      {previousWinners.length ? (
-        returnPreviousWinners
-      ) : (
-        <p className="noWinner">No previous winners</p>
-      )}
+    <div className="min-h-screen p-4 grid grid-cols-3 gap-4 grid-rows-other">
+      <Header />
+      <h3 className="text-4xl font-extrabold col-start-2 row-start-3 text-center">
+        Previous Winners
+      </h3>
+      <div className="text-xl row-start-4 col-span-3 relative top-12 text-center">
+        {previousWinners.length > 0 ? (
+          returnPreviousWinners
+        ) : (
+          <p className="text-center">No previous winners</p>
+        )}
+      </div>
+      <Footer />
     </div>
   );
 };

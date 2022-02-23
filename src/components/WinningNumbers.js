@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react";
 const WinningNumbers = ({ lottery }) => {
   const [pastNumbers, setWinningNumbers] = useState([]);
 
-  const getWinningNumbers = async (numbers = []) => {
+  const getWinningNumbers = async () => {
+    let numbers = [];
     let draw = await lottery.methods.drawNumber().call();
     for (let i = 0; i < 7; i++) {
       numbers[i] = `${await lottery.methods.winningNumbers(draw, i).call()}`;
     }
-    return setWinningNumbers((pastNumbers) => numbers);
+    setWinningNumbers((pastNumbers) => numbers);
   };
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const WinningNumbers = ({ lottery }) => {
       </li>
     );
   });
+  console.log(returnPastNumbers);
 
   return (
     <div className="row-start-3 col-start-3 self-center text-center">

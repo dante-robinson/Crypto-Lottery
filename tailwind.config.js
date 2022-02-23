@@ -4,7 +4,7 @@ module.exports = {
     extend: {
       gridTemplateRows: {
         home: "50px 1fr 1fr 1fr 25px",
-        works: "50px 0.65fr 50px 1.35fr 25px",
+        other: "50px 0.65fr 50px 1.35fr 25px",
       },
     },
   },

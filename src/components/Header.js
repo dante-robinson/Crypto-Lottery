@@ -19,8 +19,12 @@ const Header = () => {
           <h2 className="text-2xl font-bold self-center">
             <Link to="/HowItWorks">How It Works</Link>
           </h2>
-          <a className="text-2xl font-bold self-center">Previous Winners</a>
-          <a className="text-2xl font-bold self-center">Account</a>
+          <h2 className="text-2xl font-bold self-center">
+            <Link to="/Previous-Winners">Previous Winners</Link>
+          </h2>
+          <h2 className="text-2xl font-bold self-center">
+            <Link to="/Account">Account</Link>
+          </h2>
         </div>
         <div className="justify-self-end self-center">
           <button

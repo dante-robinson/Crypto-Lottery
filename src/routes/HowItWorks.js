@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useMetaMask } from "metamask-react";
 
 const HowItWorks = () => {
   return (
-    <div className=" min-h-screen p-4 grid grid-cols-3 gap-4 grid-rows-works">
+    <div className=" min-h-screen p-4 grid grid-cols-3 gap-4 grid-rows-other">
       <Header />
       <h3 className="text-4xl font-extrabold col-start-2 row-start-3 text-center">
         How it works
