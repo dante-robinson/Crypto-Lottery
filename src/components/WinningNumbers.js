@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 
 const WinningNumbers = ({ lottery }) => {
+  const [currentDraw, setCurrentDraw] = useState(null);
   const [pastNumbers, setWinningNumbers] = useState([]);
 
   const getWinningNumbers = async () => {
     let numbers = [];
     let draw = await lottery.methods.drawNumber().call();
+    setCurrentDraw(currentDraw);
+
     for (let i = 0; i < 7; i++) {
-      numbers[i] = `${await lottery.methods.winningNumbers(draw, i).call()}`;
+      numbers[i] = await lottery.methods.winningNumbers(draw, i).call();
     }
     setWinningNumbers((pastNumbers) => numbers);
   };
@@ -24,10 +27,24 @@ const WinningNumbers = ({ lottery }) => {
     );
   });
 
+  const returnNoNumbers = () => {
+    if (currentDraw == 1) {
+      return (
+        <p className="text-2xl relative top-5">There hasn't been a draw yet</p>
+      );
+    } else {
+      return <p className="text-2xl relative top-5">Loading...</p>;
+    }
+  };
+
   return (
     <div className="row-start-3 col-start-3 self-center text-center">
-      <h3 className="text-4xl font-extrabold">Previous winning numbers</h3>
-      <p>{returnPastNumbers}</p>
+      <h3 className="text-4xl font-extrabold">Previous Winning Numbers</h3>
+      {pastNumbers.length === 7 ? (
+        <p>{returnPastNumbers}</p>
+      ) : (
+        <div>{returnNoNumbers()}</div>
+      )}
     </div>
   );
 };
