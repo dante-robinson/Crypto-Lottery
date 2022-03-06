@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import ChooseNumbers from "../components/Account/ChooseNumbers";
 import WinningNumbers from "../components/WinningNumbers";
 import PlayerPreviousNumbers from "../components/Account/PlayerPreviousNumbers";
 import PlayerCurrentNumbers from "../components/Account/PlayerCurrentNumbers";
 import { useWeb3React } from "@web3-react/core";
 
 const Account = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { active, account, library, connector, activate } = useWeb3React();
 
-  const CheckNumbers = async () => {
-    await props.lottery.methods.checkNumbers().send({ from: account });
+  const checkNumbers = async () => {
+    let draw = await props.lottery.methods.drawNumber().call();
+
+    let firstNumber = await props.lottery.methods
+      .pickedNumbers(draw, account, 0)
+      .call({
+        from: props.account,
+      });
+
+    if (firstNumber == 0) {
+      window.alert("You haven't picked any numbers yet");
+    } else {
+      await props.lottery.methods.checkNumbers().send({ from: account });
+    }
   };
 
   const Content = () => {
@@ -27,11 +41,15 @@ const Account = (props) => {
           </div>
           <PlayerPreviousNumbers lottery={props.lottery} account={account} />
           <PlayerCurrentNumbers lottery={props.lottery} account={account} />
-          <button className="bg-blue-500 hover:bg-blue-700 rounded-lg">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="bg-blue-500 hover:bg-blue-700 rounded-lg"
+          >
             Choose Numbers
           </button>
+          {isOpen && <ChooseNumbers setIsOpen={setIsOpen} />}
           <button
-            onClick={CheckNumbers}
+            onClick={checkNumbers}
             className="col-start-3 bg-blue-500 hover:bg-blue-700 rounded-lg"
           >
             Check Numbers

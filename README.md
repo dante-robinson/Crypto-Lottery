@@ -109,4 +109,4 @@ if you need any test ETH for rinkeby checkout the chainlink faucet here - https:
 
 ## Things not finished
 
-React Front End
+Selectable Buttons on the Account page as well as the confirm button to send the numbers to the Blockchain.
