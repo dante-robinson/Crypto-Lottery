@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import env from "react-dotenv";
 import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -18,7 +17,7 @@ const PreviousWinners = (props) => {
       "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=" +
       wallet +
       "&startblock=10113432&endblock=99999999&page=1&offset=10&sort=asc&apikey=" +
-      env.ETHERSCAN_API;
+      process.env.REACT_APP_ETHERSCAN_API;
 
     axios.get(etherscan).then((response) => {
       const result = response.data.result;
